@@ -39,7 +39,7 @@ def show_all_pokemons(request):
             folium_map,
             pokemons_map.lat,
             pokemons_map.lon,
-            request.build_absolute_uri(pokemons_map.pokemon.image.url)
+            request.build_absolute_uri(pokemons_map.pokemon.image.url),
             )
 
     pokemons_on_page = []
@@ -47,7 +47,7 @@ def show_all_pokemons(request):
         if pokemon.image:
             pokemons_on_page.append({
                 'pokemon_id': pokemon.id,
-                'img_url': pokemon.image.url,
+                'img_url': request.build_absolute_uri(pokemon.image.url),
                 'title_ru': pokemon.title,
                 })
         else:

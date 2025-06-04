@@ -34,12 +34,12 @@ def show_all_pokemons(request):
     pokemons_entity = PokemonEntity.objects.filter()
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
 
-    for pokemons_map in pokemons_entity:
+    for pokemon_map in pokemons_entity:
         add_pokemon(
             folium_map,
-            pokemons_map.lat,
-            pokemons_map.lon,
-            request.build_absolute_uri(pokemons_map.pokemon.image.url),
+            pokemon_map.lat,
+            pokemon_map.lon,
+            request.build_absolute_uri(pokemon_map.pokemon.image.url),
             )
 
     pokemons_on_page = []

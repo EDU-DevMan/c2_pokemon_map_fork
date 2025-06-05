@@ -37,9 +37,9 @@ def show_all_pokemons(request):
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
 
     for pokemon_map in pokemons_entity:
-        deactivated = localtime() < pokemon_map.disappeared_at
-        not_occurred = localtime() > pokemon_map.appeared_at
-        if deactivated and not_occurred:
+        deactivated_pokemons = localtime() < pokemon_map.disappeared_at
+        not_activated_pokemons = localtime() > pokemon_map.appeared_at
+        if deactivated_pokemons and not_activated_pokemons:
             add_pokemon(
                 folium_map,
                 pokemon_map.lat,

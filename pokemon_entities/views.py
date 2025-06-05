@@ -76,6 +76,7 @@ def show_pokemon(request, pokemon_id):
         if pokemon_show.id == int(pokemon_id):
             requested_pokemon = pokemon_show
             pokemon.append({'title_ru': requested_pokemon.title,
+                            'description': requested_pokemon.description,
                             'img_url': request.build_absolute_uri(
                                 requested_pokemon.image.url)})
             break

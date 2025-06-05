@@ -7,6 +7,8 @@ from django.shortcuts import render
 from pokemon_entities.models import (Pokemon,
                                      PokemonEntity,)
 
+from django.utils.timezone import localtime
+
 
 MOSCOW_CENTER = [55.751244, 37.618423]
 DEFAULT_IMAGE_URL = (
@@ -35,12 +37,15 @@ def show_all_pokemons(request):
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
 
     for pokemon_map in pokemons_entity:
-        add_pokemon(
-            folium_map,
-            pokemon_map.lat,
-            pokemon_map.lon,
-            request.build_absolute_uri(pokemon_map.pokemon.image.url),
-            )
+        deactivated = localtime() < pokemon_map.disappeared_at
+        not_occurred = localtime() > pokemon_map.appeared_at
+        if deactivated and not_occurred:
+            add_pokemon(
+                folium_map,
+                pokemon_map.lat,
+                pokemon_map.lon,
+                request.build_absolute_uri(pokemon_map.pokemon.image.url),
+                )
 
     pokemons_on_page = []
     for pokemon in pokemons_db:

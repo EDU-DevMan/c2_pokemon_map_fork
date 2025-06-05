@@ -77,6 +77,8 @@ def show_pokemon(request, pokemon_id):
             requested_pokemon = pokemon_show
             pokemon.append({'title_ru': requested_pokemon.title,
                             'description': requested_pokemon.description,
+                            'title_en': requested_pokemon.title_en,
+                            'title_jp': requested_pokemon.title_jp,
                             'img_url': request.build_absolute_uri(
                                 requested_pokemon.image.url)})
             break

@@ -70,13 +70,12 @@ def show_all_pokemons(request):
 
 def show_pokemon(request, pokemon_id):
     pokemons_db = Pokemon.objects.filter()
-    # pokemons_entity = PokemonEntity.objects.filter()
     pokemons_entity = PokemonEntity.objects.filter(pokemon=pokemon_id,).first()
 
     pokemon = []
     for pokemon_show in pokemons_db:
         if pokemon_show.id == int(pokemon_id):
-            if pokemon_show.previous_evolution:
+            if pokemon_show.previous_evolution or pokemon_show.next_evolution:
                 pokemon.append({
                     'title_ru': pokemon_show.title,
                     'description': pokemon_show.description,
@@ -88,8 +87,12 @@ def show_pokemon(request, pokemon_id):
                         'pokemon_id': pokemon_show.previous_evolution.id,
                         'img_url': request.build_absolute_uri(
                             pokemon_show.previous_evolution.image.url),
-                        'title_ru': pokemon_show.previous_evolution.title,
-                        }})
+                        'title_ru': pokemon_show.previous_evolution.title},
+                    'next_evolution': {
+                        'pokemon_id': pokemon_show.next_evolution.id,
+                        'img_url': request.build_absolute_uri(
+                            pokemon_show.next_evolution.image.url),
+                        'title_ru': pokemon_show.next_evolution.title}})
             else:
                 pokemon.append({'title_ru': pokemon_show.title,
                                 'description': pokemon_show.description,
@@ -98,17 +101,12 @@ def show_pokemon(request, pokemon_id):
                                 'img_url': request.build_absolute_uri(
                                     pokemon_show.image.url),
                                 })
-
             break
     else:
+
         return HttpResponseNotFound('<h1>Такой покемон не найден</h1>')
 
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
-
-    # add_pokemon(folium_map,
-    #             pokemons_entity[pokemon_show.id].lat,
-    #             pokemons_entity[pokemon_show.id].lon,
-    #             request.build_absolute_uri(pokemon_show.image.url))
     add_pokemon(folium_map,
                 pokemons_entity.lat,
                 pokemons_entity.lon,

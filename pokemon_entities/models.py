@@ -33,10 +33,10 @@ class PokemonEntity(models.Model):
     """Характеристики покемона."""
     pokemon = models.ForeignKey(Pokemon, verbose_name='Название покемона',
                                 on_delete=models.CASCADE)
-    lat = models.FloatField(verbose_name='Широта',
-                            null=True, blank=True, default=None)
-    lon = models.FloatField(verbose_name='Долгота',
-                            null=True, blank=True, default=None)
+    lat = models.FloatField(verbose_name='Широта',)
+
+    lon = models.FloatField(verbose_name='Долгота',)
+
     appeared_at = models.DateTimeField(verbose_name='Дата появления',
                                        null=True, blank=True)
     disappeared_at = models.DateTimeField(verbose_name='Дата исчезновения',

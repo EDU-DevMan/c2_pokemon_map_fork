@@ -6,7 +6,7 @@ class Pokemon(models.Model):
     """Описание покемона."""
     title = models.CharField(verbose_name='Название покемона по-русски',
                              max_length=200)
-    description = models.CharField(verbose_name='Описание покемона',
+    description = models.TextField(verbose_name='Описание покемона',
                                    max_length=255, null=True, blank=True)
     title_en = models.CharField(verbose_name='Название покемона по-английски',
                                 max_length=200, null=True, blank=True)

@@ -19,15 +19,18 @@ class Pokemon(models.Model):
         verbose_name='Из кого эволюционирует',
         related_name='next_evolution',
         null=True, blank=True,)
- 
+
     def __str__(self):
         return f'{self.title}'
 
 
 class PokemonEntity(models.Model):
     """Характеристики покемона."""
-    pokemon = models.ForeignKey(Pokemon, verbose_name='Название покемона',
-                                on_delete=models.CASCADE)
+    pokemon = models.ForeignKey(
+        Pokemon, verbose_name='Название покемона',
+        on_delete=models.CASCADE,
+        related_name='pokemon_name',)
+
     lat = models.FloatField(verbose_name='Широта',)
 
     lon = models.FloatField(verbose_name='Долгота',)

@@ -17,14 +17,9 @@ class Pokemon(models.Model):
     previous_evolution = models.ForeignKey(
         'self', on_delete=models.CASCADE,
         verbose_name='Из кого эволюционирует',
-        related_name='next_evolutions',
+        related_name='next_evolution',
         null=True, blank=True,)
-    next_evolution = models.ForeignKey(
-        'self', on_delete=models.CASCADE,
-        verbose_name='В кого эволюционирует',
-        # related_name='previous_evolution',
-        null=True, blank=True,)
-
+ 
     def __str__(self):
         return f'{self.title}'
 

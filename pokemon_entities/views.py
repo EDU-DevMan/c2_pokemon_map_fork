@@ -69,13 +69,53 @@ def show_all_pokemons(request):
 
 
 def show_pokemon(request, pokemon_id):
-    pokemons_db = Pokemon.objects.filter()
+    pokemons_db = Pokemon.objects.all()
     pokemons_entity = PokemonEntity.objects.filter(pokemon=pokemon_id,).first()
 
     pokemon = []
     for pokemon_show in pokemons_db:
+        next_evolution = pokemon_show.next_evolution
+        previous_evolution = pokemon_show.previous_evolution
         if pokemon_show.id == int(pokemon_id):
-            if pokemon_show.previous_evolution or pokemon_show.next_evolution:
+            if next_evolution.first() and previous_evolution:
+                pokemon.append({
+                    'title_ru': pokemon_show.title,
+                    'description': pokemon_show.description,
+                    'title_en': pokemon_show.title_en,
+                    'title_jp': pokemon_show.title_jp,
+                    'img_url': request.build_absolute_uri(
+                         pokemon_show.image.url),
+                    'previous_evolution': {
+                        'pokemon_id': previous_evolution.id,
+                        'img_url': request.build_absolute_uri(
+                            previous_evolution.image.url),
+                        'title_ru': previous_evolution.title
+                        },
+                    'next_evolution': {
+                        'pokemon_id': next_evolution.first().id,
+                        'img_url': request.build_absolute_uri(
+                            next_evolution.first().image.url),
+                        'title_ru': next_evolution.first().title
+                        },
+                        })
+
+            elif previous_evolution is None:
+                pokemon.append({
+                    'title_ru': pokemon_show.title,
+                    'description': pokemon_show.description,
+                    'title_en': pokemon_show.title_en,
+                    'title_jp': pokemon_show.title_jp,
+                    'img_url': request.build_absolute_uri(
+                        pokemon_show.image.url),
+                    'next_evolution': {
+                        'pokemon_id': next_evolution.first().id,
+                        'img_url': request.build_absolute_uri(
+                            next_evolution.first().image.url),
+                        'title_ru': next_evolution.first().title
+                        },
+                        })
+
+            else:
                 pokemon.append({
                     'title_ru': pokemon_show.title,
                     'description': pokemon_show.description,
@@ -84,24 +124,14 @@ def show_pokemon(request, pokemon_id):
                     'img_url': request.build_absolute_uri(
                         pokemon_show.image.url),
                     'previous_evolution': {
-                        'pokemon_id': pokemon_show.previous_evolution.id,
+                        'pokemon_id': previous_evolution.id,
                         'img_url': request.build_absolute_uri(
-                            pokemon_show.previous_evolution.image.url),
-                        'title_ru': pokemon_show.previous_evolution.title},
-                    'next_evolution': {
-                        'pokemon_id': pokemon_show.next_evolution.id,
-                        'img_url': request.build_absolute_uri(
-                            pokemon_show.next_evolution.image.url),
-                        'title_ru': pokemon_show.next_evolution.title}})
-            else:
-                pokemon.append({'title_ru': pokemon_show.title,
-                                'description': pokemon_show.description,
-                                'title_en': pokemon_show.title_en,
-                                'title_jp': pokemon_show.title_jp,
-                                'img_url': request.build_absolute_uri(
-                                    pokemon_show.image.url),
-                                })
+                            previous_evolution.image.url),
+                        'title_ru': previous_evolution.title
+                        },
+                        })
             break
+
     else:
 
         return HttpResponseNotFound('<h1>Такой покемон не найден</h1>')

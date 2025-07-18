@@ -73,10 +73,10 @@ def show_pokemon(request, pokemon_id):
 
     pokemon = []
     for pokemon_show in pokemons_db:
-        next_evolution = pokemon_show.next_evolution
+        next_evolutions = pokemon_show.next_evolutions
         previous_evolution = pokemon_show.previous_evolution
         if pokemon_show.id == int(pokemon_id):
-            if next_evolution.first() and previous_evolution:
+            if next_evolutions.first() and previous_evolution:
                 pokemon.append({
                     'title_ru': pokemon_show.title,
                     'description': pokemon_show.description,
@@ -91,10 +91,10 @@ def show_pokemon(request, pokemon_id):
                         'title_ru': previous_evolution.title
                         },
                     'next_evolution': {
-                        'pokemon_id': next_evolution.first().id,
+                        'pokemon_id': next_evolutions.first().id,
                         'img_url': request.build_absolute_uri(
-                            next_evolution.first().image.url),
-                        'title_ru': next_evolution.first().title
+                            next_evolutions.first().image.url),
+                        'title_ru': next_evolutions.first().title
                         },
                         })
 
@@ -107,10 +107,10 @@ def show_pokemon(request, pokemon_id):
                     'img_url': request.build_absolute_uri(
                         pokemon_show.image.url),
                     'next_evolution': {
-                        'pokemon_id': next_evolution.first().id,
+                        'pokemon_id': next_evolutions.first().id,
                         'img_url': request.build_absolute_uri(
-                            next_evolution.first().image.url),
-                        'title_ru': next_evolution.first().title
+                            next_evolutions.first().image.url),
+                        'title_ru': next_evolutions.first().title
                         },
                         })
 

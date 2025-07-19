@@ -74,6 +74,7 @@ def show_pokemon(request, pokemon_id):
     pokemon = []
     next_evolutions = pokemon_show.next_evolutions.first()
     previous_evolution = pokemon_show.previous_evolution
+
     if next_evolutions and previous_evolution:
         pokemon.append({
             'title_ru': pokemon_show.title,
@@ -111,6 +112,7 @@ def show_pokemon(request, pokemon_id):
                 'title_ru': next_evolutions.title
                 },
                 })
+
     elif next_evolutions is None:
         pokemon.append({
             'title_ru': pokemon_show.title,

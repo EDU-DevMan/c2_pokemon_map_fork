@@ -72,9 +72,9 @@ def show_pokemon(request, pokemon_id):
     pokemons_entity = PokemonEntity.objects.get(pokemon=pokemon_id)
 
     pokemon = []
-    next_evolutions = pokemon_show.next_evolutions
+    next_evolutions = pokemon_show.next_evolutions.first()
     previous_evolution = pokemon_show.previous_evolution
-    if next_evolutions.first() and previous_evolution:
+    if next_evolutions and previous_evolution:
         pokemon.append({
             'title_ru': pokemon_show.title,
             'description': pokemon_show.description,
@@ -89,10 +89,10 @@ def show_pokemon(request, pokemon_id):
                 'title_ru': previous_evolution.title
                 },
             'next_evolution': {
-                'pokemon_id': next_evolutions.first().id,
+                'pokemon_id': next_evolutions.id,
                 'img_url': request.build_absolute_uri(
-                    next_evolutions.first().image.url),
-                'title_ru': next_evolutions.first().title
+                    next_evolutions.image.url),
+                'title_ru': next_evolutions.title
                 },
                 })
 
@@ -105,13 +105,13 @@ def show_pokemon(request, pokemon_id):
             'img_url': request.build_absolute_uri(
                 pokemon_show.image.url),
             'next_evolution': {
-                'pokemon_id': next_evolutions.first().id,
+                'pokemon_id': next_evolutions.id,
                 'img_url': request.build_absolute_uri(
-                    next_evolutions.first().image.url),
-                'title_ru': next_evolutions.first().title
+                    next_evolutions.image.url),
+                'title_ru': next_evolutions.title
                 },
                 })
-    elif next_evolutions.first() is None:
+    elif next_evolutions is None:
         pokemon.append({
             'title_ru': pokemon_show.title,
             'description': pokemon_show.description,
